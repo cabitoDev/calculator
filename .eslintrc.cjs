@@ -26,5 +26,5 @@ module.exports = {
   rules: {
     'import/no-unresolved': 'error'
   },
-  ignore: 'bundle.js'
+  ignorePatterns: ['bundle.js']
 }
