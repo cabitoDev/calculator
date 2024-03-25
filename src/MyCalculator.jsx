@@ -31,6 +31,7 @@ export const Calculator = () => {
     let op = operation
     if (op.includes('=')) {
       lastFinished = true
+      setOperation('')
       op = ''
     }
     if (ev) {
