@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './Calculator.css'
+import './MyCalculator.css'
 
 export const Calculator = () => {
   const [operation, setOperation] = useState('')
