@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
+import './Calculator.css'
 
 export const Calculator = () => {
   const [operation, setOperation] = useState('')
   const [actualNumber, setActualNumber] = useState('0')
-  const [finishedOperation, setFinishedOperation] = useState(false)
-
   const buttons = {
     clear: 'AC',
     divide: '/',
@@ -28,10 +27,10 @@ export const Calculator = () => {
   const clickButton = ev => {
     let result
     let lastFinished = false
+    const actualNum = actualNumber
     let op = operation
-    if (finishedOperation) {
+    if (op.includes('=')) {
       lastFinished = true
-      setFinishedOperation(false)
       op = ''
     }
     if (ev) {
@@ -62,79 +61,81 @@ export const Calculator = () => {
               setOperation(op + buttons[ev.target.id])
               return buttons[ev.target.id]
             }
-            setOperation(op.slice(0, -1) + buttons[ev.target.id])
-            return buttons[ev.target.id]
-          } else if (!isNaN(actualNumber)) {
-            setOperation(op + actualNumber + buttons[ev.target.id])
-            return buttons[ev.target.id]
-          } else {
-            setOperation(op.slice(0, -1) + buttons[ev.target.id])
+          }
+          if (!isNaN(actualNum)) {
+            setOperation(op + actualNum + buttons[ev.target.id])
             return buttons[ev.target.id]
           }
+          setOperation(op.slice(0, -1) + buttons[ev.target.id])
+          return buttons[ev.target.id]
         })
         return
       }
       if (ev.target.id === 'equals') {
         /* eslint-disable no-eval */
-        result = eval(op + actualNumber)
-        setOperation(op + actualNumber + '=' + result)
+        result = eval(op + actualNum)
+        setOperation(op + actualNum + '=' + result)
         setActualNumber(result)
-
-        setFinishedOperation(true)
         return
       }
       if (ev.target.id === 'zero') {
         if (lastFinished) {
-          setOperation('')
           setActualNumber(buttons[ev.target.id])
           return
         }
         if (
-          !actualNumber.toString().startsWith('0') ||
-          actualNumber.includes('.')
+          !actualNum.toString().startsWith('0') ||
+          actualNum.toString().includes('.')
         ) {
-          setActualNumber(actualNumber + '0')
+          setActualNumber(actualNum + '0')
         }
         return
       }
       if (ev.target.id === 'decimal') {
         setActualNumber(
-          actualNumber.includes('.') ? actualNumber : actualNumber + '.'
+          actualNum.toString().includes('.') ? actualNum : actualNum + '.'
         )
         return
       }
-      if (op === '') setOperation('')
       if (lastFinished) {
-        setOperation('')
         setActualNumber(buttons[ev.target.id])
         return
       }
-      if (isNaN(parseInt(actualNumber))) {
+      if (isNaN(parseInt(actualNum))) {
         setActualNumber(buttons[ev.target.id])
       } else {
         setActualNumber(
-          actualNumber !== '0'
-            ? actualNumber + buttons[ev.target.id]
+          actualNum !== '0'
+            ? actualNum + buttons[ev.target.id]
             : buttons[ev.target.id]
         )
       }
     }
   }
   return (
-    <>
-      <div id='operation'>{operation}</div>
-      <div id='display'>{actualNumber}</div>
-      {Object.keys(buttons).map(key => (
-        <button
-          id={key}
-          key={key}
-          onClick={ev => {
-            clickButton(ev)
-          }}
-        >
-          {buttons[key]}
-        </button>
-      ))}
-    </>
+    <div className='calculator'>
+      <div className='result'>
+        <div className='operation' id='operation'>
+          {operation}
+        </div>
+        <div className='actual' id='display'>
+          {actualNumber}
+        </div>
+      </div>
+      <div className='buttons'>
+        {Object.keys(buttons).map(key => (
+          <button
+            className={`item item-${key}`}
+            id={key}
+            key={key}
+            onClick={ev => {
+              clickButton(ev)
+            }}
+          >
+            {buttons[key]}
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }

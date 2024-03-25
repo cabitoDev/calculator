@@ -1,0 +1,43 @@
+.calculator {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-zero,
+.item-clear {
+  grid-column: span 2;
+}
+
+.item-equals {
+  grid-row: span 2;
+}
+.result {
+  display: flex;
+  flex-direction: column;
+  height: 4rem;
+  align-items: self-end;
+  justify-content: end;
+
+}
+
+.actual {
+  font-size: xxx-large;
+  font-family: monospace;
+}
+
+.operation {
+  font-family: monospace;
+}
