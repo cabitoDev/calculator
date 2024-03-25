@@ -28,7 +28,6 @@ export const Calculator = () => {
   const clickButton = ev => {
     let result
     let lastFinished = false
-    const actualNum = actualNumber
     let op = operation
     if (finishedOperation) {
       lastFinished = true
@@ -65,8 +64,8 @@ export const Calculator = () => {
             }
             setOperation(op.slice(0, -1) + buttons[ev.target.id])
             return buttons[ev.target.id]
-          } else if (!isNaN(actualNum)) {
-            setOperation(op + actualNum + buttons[ev.target.id])
+          } else if (!isNaN(actualNumber)) {
+            setOperation(op + actualNumber + buttons[ev.target.id])
             return buttons[ev.target.id]
           } else {
             setOperation(op.slice(0, -1) + buttons[ev.target.id])
@@ -77,8 +76,8 @@ export const Calculator = () => {
       }
       if (ev.target.id === 'equals') {
         /* eslint-disable no-eval */
-        result = eval(op + actualNum)
-        setOperation(op + actualNum + '=' + result)
+        result = eval(op + actualNumber)
+        setOperation(op + actualNumber + '=' + result)
         setActualNumber(result)
 
         setFinishedOperation(true)
@@ -90,13 +89,18 @@ export const Calculator = () => {
           setActualNumber(buttons[ev.target.id])
           return
         }
-        if (!actualNum.toString().startsWith('0') || actualNum.includes('.')) {
-          setActualNumber(actualNum + '0')
+        if (
+          !actualNumber.toString().startsWith('0') ||
+          actualNumber.includes('.')
+        ) {
+          setActualNumber(actualNumber + '0')
         }
         return
       }
       if (ev.target.id === 'decimal') {
-        setActualNumber(actualNum.includes('.') ? actualNum : actualNum + '.')
+        setActualNumber(
+          actualNumber.includes('.') ? actualNumber : actualNumber + '.'
+        )
         return
       }
       if (op === '') setOperation('')
@@ -105,12 +109,12 @@ export const Calculator = () => {
         setActualNumber(buttons[ev.target.id])
         return
       }
-      if (isNaN(parseInt(actualNum))) {
+      if (isNaN(parseInt(actualNumber))) {
         setActualNumber(buttons[ev.target.id])
       } else {
         setActualNumber(
-          actualNum !== '0'
-            ? actualNum + buttons[ev.target.id]
+          actualNumber !== '0'
+            ? actualNumber + buttons[ev.target.id]
             : buttons[ev.target.id]
         )
       }
